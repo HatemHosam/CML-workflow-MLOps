@@ -127,5 +127,3 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig("curves.png")
 print("Metrics and curves successfully saved.")
-
-#finished
