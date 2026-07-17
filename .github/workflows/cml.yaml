@@ -40,7 +40,7 @@ jobs:
           
           # Add the header and publish the graph image via CML
           echo "### Performance Curves" >> report.md
-          cml publish curves.png --md >> report.md
+          echo "![Loss and Accuracy Curves](./curves.png)" >> report.md
           
           # Post the complete markdown file as a PR comment
           cml comment create report.md
