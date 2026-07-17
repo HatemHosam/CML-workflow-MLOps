@@ -50,7 +50,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # 4. Training Loop tracking Loss/Accuracy
-epochs = 20
+epochs = 10
 history = {'train_loss': [], 'val_loss': [], 'val_acc': []}
 
 print("Starting training...")
