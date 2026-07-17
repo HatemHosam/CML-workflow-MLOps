@@ -6,7 +6,7 @@ import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 
-# 1. Setup Device (Use GPU if available, otherwise CPU)
+# 1. Setup Device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # 2. Data Preprocessing & Loading
