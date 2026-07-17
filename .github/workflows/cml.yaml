@@ -40,8 +40,8 @@ jobs:
           
           # Add the header and publish the graph image via CML
           echo "### Performance Curves" >> report.md
-          cml-publish curves.png --md >> report.md
+          cml publish curves.png --md >> report.md
           
           # Post the complete markdown file as a PR comment
-          cml-send-comment report.md
+          cml comment create report.md
 
