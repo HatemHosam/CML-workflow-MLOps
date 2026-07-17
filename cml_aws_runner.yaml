@@ -1,0 +1,57 @@
+name: CIFAR-10 AWS GPU Pipeline
+on: [pull_request]
+
+permissions:
+  pull-requests: write
+  contents: read
+  
+jobs:
+  # JOB 1: Connect to AWS and spin up the GPU server
+  launch-aws-runner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup CML
+        uses: iterative/setup-cml@v2
+
+      - name: Deploy GPU Instance on EC2
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cml runner launch \
+            --cloud=aws \
+            --cloud-region=us-east-1 \
+            --cloud-type=g4dn.xlarge \
+            --labels=cml-gpu-runner
+
+  # JOB 2: Execute training on the AWS EC2 instance
+  train-and-report:
+    needs: launch-aws-runner
+    runs-on: [self-hosted, cml-gpu-runner] # Instructs GitHub to execute this on the AWS machine
+    container:
+      image: docker://ghcr.io/iterative/cml:0-dvc2-base1 # Pre-built environment containing CUDA & CML drivers
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install PyTorch & Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install torch torchvision matplotlib
+
+      - name: Train custom Model on AWS EC2 GPU
+        run: python train.py
+
+      - name: Write CML Report
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          cat metrics.txt >> report.md
+          echo "### Performance Curves" >> report.md
+          echo "![Loss and Accuracy Curves](./curves.png)" >> report.md
+          # Post the comment
+          cml comment create report.md
