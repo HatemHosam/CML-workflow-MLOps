@@ -97,7 +97,7 @@ for epoch in range(epochs):
 
 # 5. Save Report Text File
 with open("metrics.txt", "w") as f:
-    f.write("## 🚀 CIFAR-10 Training Report\n\n")
+    f.write("## CIFAR-10 Training Report\n\n")
     f.write(f"- **Final Training Loss:** {history['train_loss'][-1]:.4f}\n")
     f.write(f"- **Final Validation Loss:** {history['val_loss'][-1]:.4f}\n")
     f.write(f"- **Final Validation Accuracy:** {history['val_acc'][-1] * 100:.2f}%\n\n")
