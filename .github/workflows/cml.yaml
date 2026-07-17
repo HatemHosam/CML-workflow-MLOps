@@ -1,6 +1,10 @@
 name: CIFAR-10 Model Pipeline
 on: [pull_request]
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   train-and-report:
     runs-on: ubuntu-latest
