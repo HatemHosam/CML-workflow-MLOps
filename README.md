@@ -1,2 +1,2 @@
 # CML-workflow-MLOps
-A toy example of CML (Continuous Machine Learning) Template
+A general Template of CML (Continuous Machine Learning) for automatic training, deployment, and monitoring. 
